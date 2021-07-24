@@ -1,4 +1,6 @@
+import axios from "axios";
 export default function Main(props) {
+
   const date = props.date;
   const today = props.today;
   const prevDates = props.prevDates;
@@ -43,8 +45,37 @@ export default function Main(props) {
     });
   }
 
+  function handleData2() {
+
+    const url = 'https://cors-anywhere.herokuapp.com/http://apis.data.go.kr/6260000/BusanCultureConcertService/getBusanCultureConcert'; /*URL*/
+    let queryParams = '?ServiceKey=9OMBr6YC9%2BIDhAQTbaj88qvrTay3yXUzW7oU1u3yjSoAGIme26GBP8DK4f3rlgDO2m8OmKe%2BdArxdCYh4lZGQg%3D%3D'; /*Service Key*/
+    queryParams += "&op_st_dt=2021-07-24&numOfRows=1000";
+    axios.get(url+queryParams).then((res) => {
+      console.log(res.data);
+    })
+
+  }
+
+  function handleData() {
+    
+    const url = 'https://cors-anywhere.herokuapp.com/http://apis.data.go.kr/6300000/eventDataService/eventDataListJson'; /*URL*/
+    let queryParams = '?ServiceKey=9OMBr6YC9%2BIDhAQTbaj88qvrTay3yXUzW7oU1u3yjSoAGIme26GBP8DK4f3rlgDO2m8OmKe%2BdArxdCYh4lZGQg%3D%3D'; /*Service Key*/
+    queryParams += "&numOfRows=200";
+
+    axios.get(url+queryParams).then((res) => {
+      console.log(res);
+    })
+
+    
+  }
+  
+
   return (
     <ul className="calendarWrap">
+      <li>
+        <button onClick={handleData}>대전 광역시행사 정보 데이터 불러오기</button>
+        <button onClick={handleData2}>부산 광역시행사 정보 데이터 불러오기</button>
+      </li>
       <li className="todayWrap">
         <h2>
           {props.paramDate.year}년 {props.paramDate.month + 1}월
@@ -119,7 +150,6 @@ export default function Main(props) {
               todayDate === date &&
               today.month === props.paramDate.month + 1
             ) {
-              console.log(idx);
               otherDateClass = "todayClass";
             } else if (prevDates.includes(date) && idx === 1) {
               otherDateClass = "prevClass";
